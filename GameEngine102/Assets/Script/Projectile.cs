@@ -7,13 +7,11 @@ public class Projectile : MonoBehaviour
     public float speed = 20f;
     public float lifeTime = 2f;
     public int Weapondamage = 1;
-    Enemy enemy;
 
 
     void Start()
     {
         Destroy(gameObject, lifeTime);
-        enemy = FindObjectOfType<Enemy>();
     }
 
     
@@ -22,10 +20,12 @@ public class Projectile : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
     private void OnTriggerEnter(Collider other)
-    { if (other.CompareTag("Enemy"))
+    { 
+        if (other.CompareTag("Enemy"))
         {
-            enemy.HitEnemy(Weapondamage);
-            Destroy(gameObject);
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy != null) enemy.TakeDamage(Weapondamage);
+                Destroy(gameObject);
         }
        
     }
